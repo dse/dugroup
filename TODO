@@ -1,0 +1,4 @@
+- Implement a -0/--null option to work with GNU du's -0/--null option and
+  tdu's (proposed) -0/--null option.  Or perhaps separate options of that type
+  to control input and output.
+

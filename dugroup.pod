@@ -1,0 +1,158 @@
+=head1 NAME
+
+dugroup - postprocess du output by grouping classes of files together
+
+=head1 SYNOPSIS
+
+    du | dugroup [options] | xdu
+    du | dugroup [options] | tdu
+
+=head1 DESCRIPTION
+
+dugroup(1) is a program that takes the output of the Unix utility du(1) and,
+for each directory containing listed files, collects certain classes of files
+(such as backup files or images) together into groups.  For each group of
+files, dugroup(1) outputs its collective disk space utilization as a fake
+subdirectory, and also lists its constituent files individually under that
+fake subdirectory.
+
+dugroup(1) is typically executed as the middle of a pipeline between du(1)
+[typically invoked with the -a option] and a disk space utilization display
+program such as xdu(1) or tdu(1).
+
+=head1 OPTIONS
+
+=over 4
+
+=item -b, --backups
+
+Group backup files together into a group called BACKUPS.
+
+=item -i, --images
+
+Group image files together into a group called IMAGES.
+
+=item -G, --group=GROUP
+
+Specify the name of a group into which patterns subsequently specified by one
+or more -I options are added.
+
+=item -I, --pattern=PATTERN
+
+Specify a glob pattern for files to be included into the group most recently
+specified with a -G option.
+
+=item -h, --help
+
+Display a help message.
+
+=back
+
+=head1 EXAMPLE
+
+Invoking the following command:
+
+    dugroup -G BACKUPS -I '*~' -I '*.bak' \
+            -G IMAGES -I '*.gif' -I '*.jpg' -I '*.png'
+
+on the following input:
+
+    1       /1/11.gif
+    2       /1/11.jpg
+    4       /1/11.png
+    8       /1/11.bak
+    16      /1/11~
+    32      /1/11
+    64      /1/11.txt
+    127     /1
+    256     /2/22.gif
+    512     /2/22.jpg
+    1024    /2/22.png
+    2048    /2/22.bak
+    4096    /2/22~
+    8192    /2/22
+    16384   /2/22.txt
+    32512   /2
+    32639   /
+
+produces the following output:
+
+    32      /1/11
+    64      /1/11.txt
+    1       /1/IMAGES/11.gif
+    2       /1/IMAGES/11.jpg
+    4       /1/IMAGES/11.png
+    7       /1/IMAGES
+    8       /1/BACKUPS/11.bak
+    16      /1/BACKUPS/11~
+    24      /1/BACKUPS
+    127     /1
+    8192    /2/22
+    16384   /2/22.txt
+    256     /2/IMAGES/22.gif
+    512     /2/IMAGES/22.jpg
+    1024    /2/IMAGES/22.png
+    1792    /2/IMAGES
+    2048    /2/BACKUPS/22.bak
+    4096    /2/BACKUPS/22~
+    6144    /2/BACKUPS
+    32512   /2
+    32639   /
+
+=head1 LIMITATIONS
+
+=over 4
+
+=item *
+
+This program assumes that for each directory, all its children are listed
+before it.  By default, this is true of the output of du(1).
+
+=item *
+
+This program does not combine files across different subdirectories into
+groups.
+
+=item *
+
+In instances where a filename classified into a group is a descendent of a
+directory name also classified into a group, the behavior is undefined.
+
+=item *
+
+When specifying glob patterns with the -I option, character classes
+(*.[jJ][pP][gG]) and brace expansions (*.{gif,jpg,png}) are not supported by
+dugroup(1).  dugroup(1) only supports the * and ? wildcards.
+
+However, when using a shell that supports brace expansions, such as bash(1),
+you can take advantage of that feature thusly:
+
+    du -a | dugroup -G IMAGES '-I*.'{jpg,gif,png} | tdu
+    du -a | dugroup -G IMAGES -I\*.{jpg,gif,png} | tdu
+
+Both of the examples are equivalent to:
+
+    du -a | dugroup -G IMAGES -I\*.jpg -I\*.gif -I\*.png | tdu
+
+Note that since the shell is doing brace expansion, not dugroup(1),
+{jpg,gif,png} should not be quoted; and that to prevent the shell from
+expanding '*.jpg' or cetera, the asterisk *does* need to be quoted or escaped.
+
+This kind of trick cannot be applied to character classes.
+
+=back
+
+=head1 SEE ALSO
+
+tdu(1), du(1), xdu(1).
+
+=head1 AUTHOR
+
+Darren Stuart Embry <dse@webonastick.com>.
+
+=cut
+
+#Local Variables:
+#indent-tabs-mode: nil
+#End:
+

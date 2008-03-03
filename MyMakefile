@@ -1,0 +1,17 @@
+.PHONY: publish test test-manpage
+
+publish:
+# 	mkdir -p htdocs ; \
+# 	r=`svn info tdu.pl|awk '/^Revision:/{print$$2}'` ; \
+# 	cat tdu.pl | sed 's/\$$Revision\$$/r'"$$r"'/g' > htdocs/tdu.pl.txt
+# 	svn log tdu.pl > htdocs/tdu.pl.Changelog.txt
+# 	rsync -av htdocs/ \
+# 		dse@crow.webonastick.com:/www/webonastick.com/htdocs/tdu
+
+test:
+	./dugroup -b -i < test/dugroup-test-in.txt | \
+		diff - test/dugroup-test-out.txt
+
+test-manpage: dugroup.1
+	groff -Tascii -man dugroup.1 | less
+
