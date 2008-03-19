@@ -6,17 +6,19 @@ use File::Basename qw(dirname basename);
 use Getopt::Long;
 
 our @BACKUPS = qw( *~ *.bak );
-our @IMAGES  = qw( *.gif *.jpg *.jpeg *.png *.tif *.bmp *.xpm );
+our @IMAGES  = qw( *.gif *.jpg *.jpeg *.png *.tif *.bmp *.xpm *.xbm );
 
 our $USAGE = <<"END";
 usage: dugroup [OPTION ...]
   -h, --help
-  -b, --backups          Group backup files together (@BACKUPS)
-  -i, --images           Group image files together (@IMAGES)
-  -G, --group=GROUP
-  -I, --include=PATTERN
+  -b, --backups          Group backup files together
+                         (@BACKUPS)
+  -i, --images           Group image files together
+                         (@IMAGES)
+  -G, --group=NAME       start a group with the specified name
+  -I, --include=PATTERN  add specified pattern to a group (* and ? supported)
 examples:
-  -G BACKUP -I '*~' -I '*.bak' -G IMAGES -I '*.jpg' -I '*.gif' -I '*.png'
+  -G OBJS -I '*.o' -I '*.ko' -I '*.so' -G SRCS -I '*.c' -I '*.cpp' -I '*.c++'
 END
 
 our @group_rules;
