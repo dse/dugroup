@@ -48,5 +48,9 @@ tar:
 	pod2text $< $@.
 	mv $@. $@
 
+%.1.html: %.pod Makefile
+	pod2html $< $@.
+	mv $@. $@
+
 -include MyMakefile
 
