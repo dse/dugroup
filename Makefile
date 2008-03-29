@@ -1,6 +1,5 @@
 program = dugroup
 prefix  = /usr/local
-stow    = $(prefix)/stow/$(program)
 
 .PHONY: all
 all: $(program).1
