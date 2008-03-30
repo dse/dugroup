@@ -5,6 +5,8 @@ use strict;
 use File::Basename qw(dirname basename);
 use Getopt::Long;
 
+our $VERSION = "2008-03-29";
+
 our @BACKUPS = qw( *~ *.bak );
 our @IMAGES  = qw( *.gif *.jpg *.jpeg *.png *.tif *.bmp *.xpm *.xbm );
 
@@ -17,8 +19,20 @@ usage: dugroup [OPTION ...]
                          (@IMAGES)
   -G, --group=NAME       start a group with the specified name
   -I, --include=PATTERN  add specified pattern to a group (* and ? supported)
+  -v, --version          Display version and copyright info.
 examples:
   -G OBJS -I '*.o' -I '*.ko' -I '*.so' -G SRCS -I '*.c' -I '*.cpp' -I '*.c++'
+END
+
+our $COPYRIGHT = <<"END";
+This is dugroup version $VERSION.
+Copyright (C) 2008 Darren Stuart Embry.
+
+This program comes with ABSOLUTELY NO WARRANTY.  This is free software,
+and you are welcome to redistribute it under the terms of the GNU General
+Public License, Verison 2, available here:
+
+http://dse.webonastick.com/dugroup/COPYING.txt
 END
 
 our @group_rules;
@@ -27,6 +41,7 @@ our $group_name;
 our @OPTIONS = ("b|backups"   => sub { add_pattern("BACKUPS", @BACKUPS); },
 		"i|images"    => sub { add_pattern("IMAGES", @IMAGES); },
 		"G|group=s"   => \$group_name,
+		"v|version"   => sub { print $COPYRIGHT; exit(0); },
 		"I|include=s" => sub {
 			if (defined($group_name)) {
 				add_pattern($group_name, $_[1]);
