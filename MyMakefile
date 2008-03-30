@@ -5,8 +5,8 @@ else
 endif
 
 .PHONY: publish
-publish: dugroup.1.html tar
-	rsync -av dugroup-*.tar.gz dugroup.1.html $(DEST)
+publish: $(program).1.html $(program).1.ps $(program).1.txt tar
+	rsync -av $(program)-*.tar.gz $(program).1.html $(program).1.txt $(program).1.ps $(DEST)
 
 .PHONY: test
 test:
