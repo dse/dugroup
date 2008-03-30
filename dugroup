@@ -41,7 +41,7 @@ our $group_name;
 our @OPTIONS = ("b|backups"   => sub { add_pattern("BACKUPS", @BACKUPS); },
 		"i|images"    => sub { add_pattern("IMAGES", @IMAGES); },
 		"G|group=s"   => \$group_name,
-		"v|version"   => sub { print $COPYRIGHT; exit(0); },
+		"V|version"   => sub { print $COPYRIGHT; exit(0); },
 		"I|include=s" => sub {
 			if (defined($group_name)) {
 				add_pattern($group_name, $_[1]);
