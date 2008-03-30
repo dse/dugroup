@@ -37,7 +37,7 @@ tar:
 		--exclude=TAGS \
 		--exclude='*.tar.gz' \
 		--exclude='*.tmp' \
-		--exclude '*.log'
+		--exclude='*.log'
 
 # generate man page(s)
 %.1: %.pod Makefile
