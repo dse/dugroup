@@ -28,9 +28,13 @@ program such as xdu(1) or tdu(1).
 
 Group backup files together into a group called BACKUPS.
 
+Type "dugroup -h" to get a list of backup file patterns.
+
 =item -i, --images
 
 Group image files together into a group called IMAGES.
+
+Type "dugroup -h" to get a list of image file patterns.
 
 =item -G, --group=GROUP
 
@@ -40,11 +44,15 @@ or more -I options are added.
 =item -I, --pattern=PATTERN
 
 Specify a glob pattern for files to be included into the group most recently
-specified with a -G option.
+specified with a -G option.  * and ? wildcards are supported (see
+L</"Limitations"> below), and should be quoted or escaped to prevent them from
+being expanded by the shell.
 
 =item -h, --help
 
-Display a help message.
+Display a help message, providing a list of options, and for the -b/--backups
+and -i/--images options, the lists of file patterns they add to their
+respective groups.
 
 =back
 
@@ -124,21 +132,16 @@ When specifying glob patterns with the -I option, character classes
 (*.[jJ][pP][gG]) and brace expansions (*.{gif,jpg,png}) are not supported by
 dugroup(1).  dugroup(1) only supports the * and ? wildcards.
 
-However, when using a shell that supports brace expansions, such as bash(1),
-you can take advantage of that feature thusly:
+If your shell supports brace expansion (and does not require that generated
+filenames exist), you can take advantage of that feature.  Example for
+bash(1):
 
     du -a | dugroup -G IMAGES '-I*.'{jpg,gif,png} | tdu
     du -a | dugroup -G IMAGES -I\*.{jpg,gif,png} | tdu
 
-Both of the examples are equivalent to:
+Both of the above commands are expanded to:
 
     du -a | dugroup -G IMAGES -I\*.jpg -I\*.gif -I\*.png | tdu
-
-Note that since the shell is doing brace expansion, not dugroup(1),
-{jpg,gif,png} should not be quoted; and that to prevent the shell from
-expanding '*.jpg' or cetera, the asterisk *does* need to be quoted or escaped.
-
-This kind of trick cannot be applied to character classes.
 
 =back
 
