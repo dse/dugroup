@@ -113,6 +113,39 @@ produces the following output:
 
 =item *
 
+The use of the following options of GNU du(1) will result in undefined and/or
+incorrect behavior by this program:
+
+=over 4
+
+=item -h, --human-readable, --si
+
+dugroup(1) does not handle sizes like "50K" or "40M" correctly, so the use of
+these options will mislead dugroup(1) into computing the wrong total size for
+a group of files.
+
+=item -b, --bytes
+
+This may produce integers too large for dugroup(1) to handle, depending on the
+Perl version and platform on which dugroup(1) is running.
+
+=item -0, --null
+
+dugroup(1) does not implement this option, which would be required to
+correctly handle du(1)'s output if this option is specified for it.
+
+=item -c, --total
+
+May result in unexpected behavior under certain circumstances.
+
+=item -S, --separate-dirs
+
+May result in unexpected behavior under certain circumstances.
+
+=back
+
+=item *
+
 This program assumes that for each directory, all its children are listed
 before it.  By default, this is true of the output of du(1).
 
