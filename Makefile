@@ -56,6 +56,9 @@ tar:
 %.1.html: %.pod Makefile
 	pod2html $< > $@.
 	mv $@. $@
+%.pdf: %.ps Makefile
+	ps2pdf $< $@.
+	mv $@. $@
 
 -include MyMakefile
 
