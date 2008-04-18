@@ -1,0 +1,32 @@
+Requirements to install dugroup:
+
+	- GNU Make
+
+To install the above on a Debian GNU/Linux system:
+
+	apt-get install make
+
+What you need to do:
+
+	1. type: make
+	2. type: make install
+
+What the above steps do:
+
+	make
+	- generates the dugroup manpage.
+	make install
+	- installs the executable as /usr/local/bin/dugroup
+	- installs the manpage as /usr/local/man/man1/dugroup.1
+
+If you do not wish to install into /usr/local, then instead of a simple "make
+install" you can install to a different installation path via one of the
+following:
+
+	make install prefix=/usr
+
+	# if you have the GNU Stow package installed
+	make install prefix=/usr/local/stow/dugroup
+	cd /usr/local/stow
+	stow dugroup
+	
