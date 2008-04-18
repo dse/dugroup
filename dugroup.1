@@ -1,14 +1,24 @@
-=head1 NAME
-
-dugroup - postprocess du output by grouping classes of files together
-
-=head1 SYNOPSIS
-
-    du | dugroup [options] | xdu
-    du | dugroup [options] | tdu
-
-=head1 DESCRIPTION
-
+.\" Process this file with:
+.\" groff -man -Tascii dugroup.1
+.de Vb \" begin verbatim text
+.RS
+.ft CW
+.nf
+.ne
+\&
+..
+.de Ve \" end verbatim text
+\&
+.ft R
+.fi
+.RE
+..
+.TH DUGROUP 1 "2008-04-18" misc "Utilities"
+.SH NAME
+dugroup \- du output filter for grouping files by extension
+.SH SYNOPSIS
+du ARGS | dugroup [OPTION ...]
+.SH DESCRIPTION
 dugroup(1) is a program that takes the output of the Unix utility du(1) and,
 for each directory containing listed files, collects certain classes of files
 (such as backup files or images) together into groups.  For each group of
@@ -19,182 +29,129 @@ fake subdirectory.
 dugroup(1) is typically executed as the middle of a pipeline between du(1)
 [typically invoked with the -a option] and a disk space utilization display
 program such as xdu(1) or tdu(1).
-
-=head1 OPTIONS
-
-=over 4
-
-=item -b, --backups
-
+.SH OPTIONS
+.IP "-b, --backups"
 Group backup files together into a group called BACKUPS.
 
 Type "dugroup -h" to get a list of backup file patterns.
-
-=item -i, --images
-
+.IP "-i, --images"
 Group image files together into a group called IMAGES.
 
 Type "dugroup -h" to get a list of image file patterns.
-
-=item -G, --group=GROUP
-
+.IP "-G, --group=GROUP"
 Specify the name of a group into which patterns subsequently specified by one
 or more -I options are added.
-
-=item -I, --pattern=PATTERN
-
+.IP "-I, --pattern=PATTERN"
 Specify a glob pattern for files to be included into the group most recently
-specified with a -G option.  * and ? wildcards are supported (see
-L</"Limitations"> below), and should be quoted or escaped to prevent them from
-being expanded by the shell.
-
-=item -h, --help
-
+specified with a -G option.  * and ? wildcards are supported (see the
+Limitations section below), and should be quoted or escaped to prevent them
+from being expanded by the shell.
+.IP "-h, --help"
 Display a help message, providing a list of options, and for the -b/--backups
 and -i/--images options, the lists of file patterns they add to their
 respective groups.
-
-=back
-
-=head1 EXAMPLE
-
+.SH EXAMPLE
 Invoking the following command:
-
-    dugroup -G BACKUPS -I '*~' -I '*.bak' \
-            -G IMAGES -I '*.gif' -I '*.jpg' -I '*.png'
-
+.Vb
+\&dugroup -G BACKUPS -I '*~' -I '*.bak' \\
+\&        -G IMAGES -I '*.gif' -I '*.jpg' -I '*.png'
+.Ve
 on the following input:
-
-    1       /1/11.gif
-    2       /1/11.jpg
-    4       /1/11.png
-    8       /1/11.bak
-    16      /1/11~
-    32      /1/11
-    64      /1/11.txt
-    127     /1
-    256     /2/22.gif
-    512     /2/22.jpg
-    1024    /2/22.png
-    2048    /2/22.bak
-    4096    /2/22~
-    8192    /2/22
-    16384   /2/22.txt
-    32512   /2
-    32639   /
-
+.Vb
+\&1       /1/11.gif
+\&2       /1/11.jpg
+\&4       /1/11.png
+\&8       /1/11.bak
+\&16      /1/11~
+\&32      /1/11
+\&64      /1/11.txt
+\&127     /1
+\&256     /2/22.gif
+\&512     /2/22.jpg
+\&1024    /2/22.png
+\&2048    /2/22.bak
+\&4096    /2/22~
+\&8192    /2/22
+\&16384   /2/22.txt
+\&32512   /2
+\&32639   /
+.Ve
 produces the following output:
-
-    32      /1/11
-    64      /1/11.txt
-    1       /1/IMAGES/11.gif
-    2       /1/IMAGES/11.jpg
-    4       /1/IMAGES/11.png
-    7       /1/IMAGES
-    8       /1/BACKUPS/11.bak
-    16      /1/BACKUPS/11~
-    24      /1/BACKUPS
-    127     /1
-    8192    /2/22
-    16384   /2/22.txt
-    256     /2/IMAGES/22.gif
-    512     /2/IMAGES/22.jpg
-    1024    /2/IMAGES/22.png
-    1792    /2/IMAGES
-    2048    /2/BACKUPS/22.bak
-    4096    /2/BACKUPS/22~
-    6144    /2/BACKUPS
-    32512   /2
-    32639   /
-
-=head1 LIMITATIONS
-
-=over 4
-
-=item *
-
+.Vb
+\&32      /1/11
+\&64      /1/11.txt
+\&1       /1/IMAGES/11.gif
+\&2       /1/IMAGES/11.jpg
+\&4       /1/IMAGES/11.png
+\&7       /1/IMAGES
+\&8       /1/BACKUPS/11.bak
+\&16      /1/BACKUPS/11~
+\&24      /1/BACKUPS
+\&127     /1
+\&8192    /2/22
+\&16384   /2/22.txt
+\&256     /2/IMAGES/22.gif
+\&512     /2/IMAGES/22.jpg
+\&1024    /2/IMAGES/22.png
+\&1792    /2/IMAGES
+\&2048    /2/BACKUPS/22.bak
+\&4096    /2/BACKUPS/22~
+\&6144    /2/BACKUPS
+\&32512   /2
+\&32639   /
+.Ve
+.SH LIMITATIONS
+.IP \(bu
 The use of the following options of GNU du(1) will result in undefined and/or
 incorrect behavior by this program:
-
-=over 4
-
-=item -h, --human-readable, --si
-
+.RS
+.IP "-h, --human-readable, --si"
 dugroup(1) does not handle sizes like "50K" or "40M" correctly, so the use of
 these options will mislead dugroup(1) into computing the wrong total size for
 a group of files.
-
-=item -b, --bytes
-
+.IP "-b, --bytes"
 This may produce integers too large for dugroup(1) to handle, depending on the
 Perl version and platform on which dugroup(1) is running.
-
-=item -0, --null
-
+.IP "-0, --null"
 dugroup(1) does not implement this option, which would be required to
 correctly handle du(1)'s output if this option is specified for it.
-
-=item -c, --total
-
+.IP "-c, --total"
 May result in unexpected behavior under certain circumstances.
-
-=item -S, --separate-dirs
-
+.IP "-S, --separate-dirs"
 May result in unexpected behavior under certain circumstances.
-
-=back
-
-=item *
-
+.RE
+.IP \(bu
 This program assumes that for each directory, all its children are listed
 before it.  By default, this is true of the output of du(1).
-
-=item *
-
+.IP \(bu
 This program does not combine files across different subdirectories into
 groups.
-
-=item *
-
+.IP \(bu
 In instances where a filename classified into a group is a descendent of a
 directory name also classified into a group, the behavior is undefined.
-
-=item *
-
+.IP \(bu
 When specifying glob patterns with the -I option, character classes
 (*.[jJ][pP][gG]) and brace expansions (*.{gif,jpg,png}) are not supported by
 dugroup(1).  dugroup(1) only supports the * and ? wildcards.
-
+.P
 If your shell supports brace expansion (and does not require that generated
 filenames exist), you can take advantage of that feature.  Example for
 bash(1):
-
-    du -a | dugroup -G IMAGES '-I*.'{jpg,gif,png} | tdu
-    du -a | dugroup -G IMAGES -I\*.{jpg,gif,png} | tdu
-
+.Vb
+\&du -a | dugroup -G IMAGES '-I*.'{jpg,gif,png} | tdu
+\&du -a | dugroup -G IMAGES -I\\*.{jpg,gif,png} | tdu
+.Ve
 Both of the above commands are expanded to:
-
-    du -a | dugroup -G IMAGES -I\*.jpg -I\*.gif -I\*.png | tdu
-
-=back
-
-=head1 AUTHOR
-
-Darren Stuart Embry <dse@webonastick.com>.
-
-=head1 COPYRIGHT
-
+.Vb
+\&du -a | dugroup -G IMAGES -I\\*.jpg -I\\*.gif -I\\*.png | tdu
+.Ve
+.SH AUTHOR
+Darren Stuart Embry (dse@webonastick.com).
+.SH COPYRIGHT
 This program is free software.  It can be distributed and/or modified under
 the terms of the GNU General Public License, Version 2.  For more details you
 can view it at http://webonastick.com/tdu/COPYING.txt
-
-=head1 SEE ALSO
-
-tdu(1), du(1), xdu(1).
-
-=cut
-
-#Local Variables:
-#indent-tabs-mode: nil
-#End:
-
+.SH SEE ALSO
+.BR tdu(1),
+.BR du(1),
+.BR xdu(1).

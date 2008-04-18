@@ -13,7 +13,7 @@ install: $(program).1
 
 .PHONY: clean
 clean:
-	/bin/rm -fr *~ $(program).1 $(program).1* || true
+	/bin/rm -fr *~ $(program).1.* || true
 
 .PHONY: tar
 tar:
@@ -39,22 +39,14 @@ tar:
 		--exclude='*.tmp' \
 		--exclude='*.log'
 
-# generate man page(s)
-%.1: %.pod Makefile
-	pod2man --center=' ' $< $@
+%.1.txt: %.1 Makefile
+	nroff -man $< | col -bx > $@.
 	mv $@. $@
-
-%.1.tex: %.pod Makefile
-	pod2latex -full -out $@ $<
-%.dvi: %.tex Makefile
-	latex $<
-%.ps: %.dvi Makefile
-	dvips -tletter $<
-%.1.txt: %.pod Makefile
-	pod2text $< $@.
+%.1.ps: %.1 Makefile
+	groff -Tps -man $< >$@.
 	mv $@. $@
-%.1.html: %.pod Makefile
-	pod2html $< > $@.
+%.1.html: %.1 Makefile
+	groff -Thtml -man $< >$@.
 	mv $@. $@
 %.pdf: %.ps Makefile
 	ps2pdf $< $@.
