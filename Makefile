@@ -42,7 +42,7 @@ tar:
 # generate man page(s)
 %.1: %.pod Makefile
 	pod2man --center=' ' $< $@
-	mv $@ .$@
+	mv $@. $@
 
 %.1.tex: %.pod Makefile
 	pod2latex -full -out $@ $<
