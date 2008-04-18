@@ -1,23 +1,28 @@
 .\" Process this file with:
 .\" groff -man -Tascii dugroup.1
+.\" ===========================================================================
 .de Vb \" begin verbatim text
+.P
 .RS
 .ft CW
 .nf
 .ne
-\&
 ..
 .de Ve \" end verbatim text
-\&
 .ft R
 .fi
 .RE
+.P
 ..
-.TH DUGROUP 1 "2008-04-18" misc "Utilities"
+.\" ===========================================================================
+.TH dugroup 1
 .SH NAME
 dugroup \- du output filter for grouping files by extension
 .SH SYNOPSIS
-du ARGS | dugroup [OPTION ...]
+.B "du"
+.IR "ARG" " ... |"
+.B "dugroup"
+.RI "[" "OPTION" " ...]"
 .SH DESCRIPTION
 dugroup(1) is a program that takes the output of the Unix utility du(1) and,
 for each directory containing listed files, collects certain classes of files
@@ -134,6 +139,7 @@ When specifying glob patterns with the -I option, character classes
 (*.[jJ][pP][gG]) and brace expansions (*.{gif,jpg,png}) are not supported by
 dugroup(1).  dugroup(1) only supports the * and ? wildcards.
 .P
+.RS
 If your shell supports brace expansion (and does not require that generated
 filenames exist), you can take advantage of that feature.  Example for
 bash(1):
@@ -145,6 +151,7 @@ Both of the above commands are expanded to:
 .Vb
 \&du -a | dugroup -G IMAGES -I\\*.jpg -I\\*.gif -I\\*.png | tdu
 .Ve
+.RE
 .SH AUTHOR
 Darren Stuart Embry (dse@webonastick.com).
 .SH COPYRIGHT
