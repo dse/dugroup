@@ -2,10 +2,10 @@ program = dugroup
 prefix  = /usr/local
 
 .PHONY: all
-all: $(program).1
+all:
 
 .PHONY: install
-install: $(program).1
+install:
 	install -d -m 0755           $(prefix)/bin
 	install -d -m 0755           $(prefix)/share/man/man1
 	install -m 0755 $(program)   $(prefix)/bin
