@@ -18,7 +18,7 @@ clean:
 .PHONY: tar
 tar:
 	tar cvvzf dugroup-`date +%Y-%m-%d`.tar.gz \
-		--transform='s:^\.:dugroup:' \
+		--transform='s:^:dugroup/:' \
 		--show-transformed-names \
 		* \
 		--exclude=MyMakefile \
