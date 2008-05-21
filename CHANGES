@@ -1,0 +1,10 @@
+dugroup 200805xx
+	- adds this CHANGES file
+	- remove hyphens from version numbers
+	- patch to Makefile to use DESTDIR, from Michael Jennings
+          <mej@kainx.org>
+
+dugroup 2008-05-07
+	- first publicized release
+	- functionality was previously in tdu
+
