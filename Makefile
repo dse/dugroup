@@ -1,15 +1,16 @@
 program = dugroup
 prefix  = /usr/local
+DESTDIR =
 
 .PHONY: all
 all:
 
 .PHONY: install
 install:
-	install -d -m 0755           $(prefix)/bin
-	install -d -m 0755           $(prefix)/share/man/man1
-	install -m 0755 $(program)   $(prefix)/bin
-	install -m 0644 $(program).1 $(prefix)/share/man/man1
+	install -d -m 0755           $(DESTDIR)$(prefix)/bin
+	install -d -m 0755           $(DESTDIR)$(prefix)/share/man/man1
+	install -m 0755 $(program)   $(DESTDIR)$(prefix)/bin
+	install -m 0644 $(program).1 $(DESTDIR)$(prefix)/share/man/man1
 
 .PHONY: clean
 clean:
